@@ -7,7 +7,7 @@ class Rain {
       this.G = 0;
       this.B = 0;
       this.radius = 40;
-      this.speedx= random(1,5);
+      this.speedx= random(1,15);
       this.speedy= random(5, windowWidth)
       this.amplitude = 20;
       angleMode(DEGREES);
