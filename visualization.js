@@ -9,7 +9,7 @@ var drops = [];
 var previous;
 function preload()
 {
-  song = loadSound("./music/Shipwreck.mp3", loaded);
+  song = loadSound("Online-Music-Visualizer/music/Shipwreck.mp3", loaded);
 }
 
 function setup()
