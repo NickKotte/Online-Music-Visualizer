@@ -20,7 +20,7 @@ function setup()
   angleMode(DEGREES);
   amp = new p5.Amplitude();
   noFill();
-  for(let i = 0; i < 20; i++)
+  for(let i = 0; i < 150; i++)
     drops[i] = new Rain();
   previous = 0;
 }
