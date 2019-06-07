@@ -7,6 +7,10 @@ var amp;
 var loc = 0;
 var drops = [];
 var previous;
+var center = {
+  x:0,
+  y:0
+};
 function preload()
 {
   song = loadSound("Music/Shipwreck.mp3", loaded);
@@ -23,6 +27,8 @@ function setup()
   for(let i = 0; i < 150; i++)
     drops[i] = new Rain();
   previous = 0;
+  center.x = windowWidth/2;
+  center.y = windowHeight/2;
 }
 
 function draw()
@@ -31,13 +37,10 @@ function draw()
 
   var level = amp.getLevel();
   level = map(level, 0,1, 0,200);
-
   spectrum = fft.analyze();
   spectrum = spectrum.splice(10,512);
 
-  var s1 = spectrum.slice(0,90);
-
-  background(map(spectrum[140],0,256,10,256));
+  background(0);
 
   var mWidth = spectrum[10]*2;
   if(previous === 0)
@@ -52,12 +55,12 @@ function draw()
 
   for(let i = 0; i < drops.length; i++)
   {
-    drops[i].show(level,mWidth);
+    drops[i].show(level,mWidth*0.7);
   }
 
 
 push();
-  translate(windowWidth/2,windowHeight/2);
+  translate(center.x,center.y);
   rotate(90);
   stroke(254,95,82, 40);
   strokeWeight(30);
@@ -116,7 +119,6 @@ var high = 0;
   }
 pop();
 //endShape(CLOSE);
-
 
 }
 
