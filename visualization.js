@@ -53,12 +53,13 @@ function draw()
     mWidth = temp;
     previous = mWidth;
   }
-  background(map(spectrum[140]*0.5,0,256,10,256));
+  var j = color(map(spectrum[140]*0.5,0,256,10,256));
+  background(j);
 
 
   for(let i = 0; i < drops.length; i++)
   {
-    drops[i].show(level,mWidth*0.7);
+    drops[i].show(spectrum[140],mWidth*0.7);
   }
 
 
@@ -89,35 +90,36 @@ function draw()
 
     if(index < 90)
     {
-      index = floor(index*0.3);
+      index = floor(index*0.25);
     }
 
     //stroke(spectrum[140]*1.25,220,220);
-    stroke(20);
-    var r;
+    stroke(0);
 
+    var r = 0;
+    amplitude = spectrum[index] + windowWidth*0.01;
     if(index < 90){
-
-        amplitude = spectrum[index] + windowWidth*0.01;
-        r = map(amplitude, 0,255, 40,200)*map(spectrum[90], 40,200, 0.5, 1);
-        strokeWeight(3);
-        }
+        r = (map(amplitude, 0,256, 0, 2)*map(spectrum[0],0, 256, -40, 130));
+        strokeWeight(4);
+    }
     else {
-        amplitude = spectrum[index] + windowWidth*0.01;
-        r = map(amplitude, 0,256, 40, 200);
+        r = map(amplitude, 0,256, 50, 200);
         strokeWeight(3);
     }
-    if (amplitude < 10){
-        r = 40;
-    }
+    if (r <= 50)
+        r =50;
+
+
     let x = r * cos(i);
     let y = r * sin(i);
 
-    line(r*0.25*cos(i*8),r*0.25*sin(i*-16),x,y);
+    line(r*0.25*cos(i*8),r*0.25*sin(i*12),x,y);
 
 
   }
-
+  strokeWeight(6);
+  fill(0);
+  ellipse(0,0, 100);
 
 }
 

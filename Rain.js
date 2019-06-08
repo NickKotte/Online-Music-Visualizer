@@ -32,12 +32,19 @@ class Rain {
       }
       this.y = 5*sin(this.x) + this.speedy;
 
-      amp = map(amp, 0,200, 100,255);
-      strokeWeight(3);
-      stroke(250,50);
+      amp = map(amp, 0,200, 0,255);
+      strokeWeight(0);
+      stroke(250);
       fill(255);
-      //fill(255,255,0);
-      //stroke(map(this.x,0,windowHeight*1.1, 10,255), 0, 0, 255);
+
+      if(this.x < center.y)
+      {
+          fill(amp,0,map(this.x,0,center.y, 0,150));
+      }
+      else {
+          fill(amp,0,map(this.x,center.y,windowHeight, 150,0));
+      }
+
 
       this.add = 0;
 
