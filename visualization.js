@@ -7,6 +7,8 @@ var amp;
 var loc = 0;
 var drops = [];
 var previous;
+var amplitude;
+var rote = 90;
 var center = {
   x:0,
   y:0
@@ -19,20 +21,21 @@ function preload()
 function setup()
 {
   createCanvas(windowWidth,windowHeight);
-  fft = new p5.FFT(0.8, 512);
+  fft = new p5.FFT(0.9, 512);
   // colorMode(HSB);
   angleMode(DEGREES);
   amp = new p5.Amplitude();
   noFill();
-  for(let i = 0; i < 150; i++)
+  for(let i = 0; i < 300; i++)
     drops[i] = new Rain();
   previous = 0;
-  center.x = windowWidth/2;
-  center.y = windowHeight/2;
+  center.x = windowWidth*0.5;
+  center.y = windowHeight*0.5;
 }
 
 function draw()
 {
+
   button.mousePressed(toggleSong);
 
   var level = amp.getLevel();
@@ -40,7 +43,6 @@ function draw()
   spectrum = fft.analyze();
   spectrum = spectrum.splice(10,512);
 
-  background(0);
 
   var mWidth = spectrum[10]*2;
   if(previous === 0)
@@ -51,6 +53,7 @@ function draw()
     mWidth = temp;
     previous = mWidth;
   }
+  background(map(spectrum[140]*0.5,0,256,10,256));
 
 
   for(let i = 0; i < drops.length; i++)
@@ -59,31 +62,19 @@ function draw()
   }
 
 
-push();
   translate(center.x,center.y);
-  rotate(90);
+  if(level > 80)
+    rotate(rote+0.1);
+  if(level <= 80)
+    rotate(rote-0.1)
+  // rotate(90);
   stroke(254,95,82, 40);
   strokeWeight(30);
   fill(254,95,82);
   ellipse(0,0,spectrum[140]*2, mWidth);
 
 
-  // strokeWeight(1);
-  // for(let i = 0; i < 512; i++)
-  // {
-  //   if(i < 90)
-  //     stroke(255,0,0);
-  //   else if(i < 180)
-  //     stroke(255,255,0);
-  //   else if(i < 270)
-  //     stroke(255,0,255);
-  //   else if(i < 360)
-  //     stroke(0,255,255);
-  //   line(i, windowHeight, i, windowHeight-spectrum[i]);
-  // }
 
-//beginShape();
-var high = 0;
   for(i = 0;i < 360; i++)
   {
     let index = 0;
@@ -95,30 +86,38 @@ var high = 0;
     {
       index = 360-i;
     }
+
     if(index < 90)
     {
-      index = floor(index/3);
-      high = i+270;
+      index = floor(index*0.3);
     }
 
+    //stroke(spectrum[140]*1.25,220,220);
+    stroke(20);
+    var r;
 
-    var amplitude = spectrum[index];
-    amplitude += windowWidth*0.01;
+    if(index < 90){
 
-    var angle = map(loc, -512,512, 0,180)
-    strokeWeight(3);
-    let r = map(amplitude, 0,256, 60, 200);
-    //fill(map(amplitude,0,256, 100,255),255,255);
-
+        amplitude = spectrum[index] + windowWidth*0.01;
+        r = map(amplitude, 0,255, 40,200)*map(spectrum[90], 40,200, 0.5, 1);
+        strokeWeight(3);
+        }
+    else {
+        amplitude = spectrum[index] + windowWidth*0.01;
+        r = map(amplitude, 0,256, 40, 200);
+        strokeWeight(3);
+    }
+    if (amplitude < 10){
+        r = 40;
+    }
     let x = r * cos(i);
     let y = r * sin(i);
 
-    stroke(0);
-    line(r/4*cos(i*8),r/4*sin(i*-16),x,y);
+    line(r*0.25*cos(i*8),r*0.25*sin(i*-16),x,y);
+
 
   }
-pop();
-//endShape(CLOSE);
+
 
 }
 
